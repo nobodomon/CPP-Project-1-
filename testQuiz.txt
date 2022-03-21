@@ -1,0 +1,39 @@
+[Quiz]
+[ID]
+0001
+[Name]
+Test Quiz
+[Start]
+[Question][MCQ]
+What is ICT
+[Options]
+[1]
+Option 1
+[2]
+Option 2
+[3]
+Option 3
+[4]
+Option 4
+[Answer]
+3
+
+[Question][Multiselect]
+What is placeholder
+[Options]
+[1]
+Option 1
+[2]
+Option 2
+[3]
+Option 3
+[4]
+Option 4
+[Answer]
+1,2,4
+
+[Question][ShortAnswer]
+What is placeholder
+[Answer]
+abc,Abc,ABC
+[End]

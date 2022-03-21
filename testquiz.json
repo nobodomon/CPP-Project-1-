@@ -1,0 +1,36 @@
+{
+  "Quiz":{
+    "ID": 1,
+    "NumberOfQns": 3,
+    "Name": "Test Quiz",
+    "Q1":{
+      "Type": "MCQ",
+      "Title": "What is ICT?",
+      "NumberOfOptions":4,
+      "Options":{
+        "1": "Option 1",
+        "2": "Option 2",
+        "3": "Option 3",
+        "4": "Option 4"
+      },
+      "Answer":3
+    },
+    "Q2":{
+      "Type": "MultiSelect",
+      "Title": "What is ICT?",
+      "NumberOfOptions":4,
+      "Options":{
+        "1": "Option 1",
+        "2": "Option 2",
+        "3": "Option 3",
+        "4": "Option 4"
+      },
+      "Answer":"1,2,4"
+    },
+    "Q3":{
+      "Type": "ShortAnswer",
+      "Title": "What is ICT?",
+      "Answer":"abc,Abc,ABC"
+    }
+  }
+}
