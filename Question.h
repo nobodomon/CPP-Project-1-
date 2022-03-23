@@ -8,7 +8,12 @@ using namespace std;
 
 class Question {
 	public:
+		Question(string , QuestionType){};
+		// Question() = delete;
+		// Question(const Question &) = delete;
+		// Question(Question &&) = default;
+		virtual ~Question(){}
 		std::string question;
 		QuestionType type;
-		int verifyAnswer();
+		virtual int verifyAnswer();
 };

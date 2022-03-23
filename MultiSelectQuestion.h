@@ -11,5 +11,5 @@ class MultiSelectQuestion: public Question {
 	    vector<string> choices;
         vector<int> correctAnswers;
         vector<int> userChoices;
-        int verifyAnswer();
+		virtual int verifyAnswer();
     };

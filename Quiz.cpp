@@ -1,11 +1,14 @@
 #include <string>
+#include <memory>
 #include "Question.h"
 #include <vector>
-class Quiz {
-	public:
-		int quizCode;
-		std::string title;
-		std::vector<Question*> Questions;
-
-		void readFile() {};
+using namespace std;
+class Quiz
+{
+public:
+	int quizCode;
+	std::string title;
+	std::vector<unique_ptr<Question>> Questions;
+	virtual void printQuestion(){}
+	void readFile(){};
 };

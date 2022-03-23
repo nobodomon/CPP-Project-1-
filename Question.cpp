@@ -3,7 +3,9 @@
 
 class Question {
 	public:
+		Question(string question, QuestionType type){};
+		virtual ~Question(){};
 		std::string question;
 		QuestionType type;
-		int verifyAnswer();
+		virtual int verifyAnswer();
 };

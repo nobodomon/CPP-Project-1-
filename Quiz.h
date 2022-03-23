@@ -10,7 +10,7 @@ class Quiz {
 public:
     int quizCode;
     std::string title;
-    std::vector<Question*> Questions;
-
+	std::vector<unique_ptr<Question>> Questions;
+    virtual void printQuestion(){};
     void readFile() {};
 };

@@ -5,6 +5,7 @@
 #include <string>
 #include "FileHandler.cpp"
 #include "Quiz.h"
+#include "Question.h"
 #include "MultipleChoiceQuestion.h"
 #include "MultiSelectQuestion.h"
 using namespace std;
@@ -15,31 +16,31 @@ int main()
 	printf("Welcome to Quizzo how may I help you today?");
 	while (input != "exit")
 	{
-		Quiz readQuiz = FileHandler::getQuizFromFile();
-		cout << "Quiz code " << readQuiz.quizCode << endl;
-		Question currQuestion;
+		Quiz* readQuiz = FileHandler::getQuizFromFile();
+		FileHandler* handler = new FileHandler;
+		cout << "Quiz code " << readQuiz->quizCode << endl;
 		QuestionType currType;
-		for (auto qn : readQuiz.Questions)
+		//vector<unique_ptr<Question>> questions = readQuiz.Questions;
+		int i = 0;
+		vector<unique_ptr<Question>> questions = readQuiz->Questions;
+		for (auto &qn : questions)
 		{
-			currType = qn->type;
-			cout << qn->question << endl;
-			if (currType == QuestionType::MCQ)
+			//currType = qn->type;
+			//cout << qn.question << endl;
+			if (MultipleChoiceQuestion* mcq = dynamic_cast<MultipleChoiceQuestion*>(qn.get()); mcq != nullptr)
 			{
-				cout << qn->question << endl;
-				MultipleChoiceQuestion* mcq = dynamic_cast<MultipleChoiceQuestion*>(qn);
-				for (auto option:qnPtr.get()->choices)
-				{
-					cout << option << endl;
-				}
+				cout << mcq->question << endl;
+				mcq->printQuestion();
 			}
-			else if (currType == QuestionType::MSQ)
-			{
-				cout << qn->question << endl;
-				for (auto option:qn->choices)
-				{
-					cout << option << endl;
-				}
-			}
+			// else if (currType == QuestionType::MSQ)
+			// {
+			// 	cout << qn.question << endl;
+			// 	for (auto option:qn.choices)
+			// 	{
+			// 		cout << option << endl;
+			// 	}
+			// }
+			i++;
 		}
 	}
 }
