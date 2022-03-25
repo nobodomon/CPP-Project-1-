@@ -1,4 +1,5 @@
 #include "FileHandler.h"
+#include "InputHandler.h"
 using namespace std;
 
 Quiz *FileHandler::getQuizFromFile()
@@ -48,32 +49,15 @@ Quiz *FileHandler::getQuizFromFile()
 				choices.push_back(option[to_string(qn + 1)].asString());
 				allowedInputs.push_back(to_string(qn + 1));
 			}
-			size_t pos = 0;
-			string rawAnswer = question["Answer"].asString();
-			string token;
-			vector<int> correctAnswers;
-			while ((pos = rawAnswer.find(",")) != string::npos)
-			{
-				token = rawAnswer.substr(0, pos);
-				correctAnswers.push_back(stoi(token));
-				rawAnswer.erase(0, pos + string(",").length());
-			}
+			vector<string> correctAnswers = InputHandler::stringToVector(question["Answer"].asString(),',');
+
 			quiz->addQuestion(new MultiSelectQuestion(questionTitle, type, choices,allowedInputs, correctAnswers));
 		}
 		else if(question["Type"].asString() == "ShortAnswer")
 		{
 			string questionTitle = question["Title"].asString();
 			QuestionType type = QuestionType::SA;
-			size_t pos = 0;
-			string rawAnswer = question["Answer"].asString();
-			string token;
-			vector<string> acceptableAnswers;
-			while ((pos = rawAnswer.find(",")) != string::npos)
-			{
-				token = rawAnswer.substr(0, pos);
-				acceptableAnswers.push_back(token);
-				rawAnswer.erase(0, pos + string(",").length());
-			}
+			vector<string> acceptableAnswers = InputHandler::stringToVector(question["Answer"].asString(),',');
 			quiz->addQuestion(new ShortAnswerQuestion(questionTitle,type,acceptableAnswers));
 		}
 	}

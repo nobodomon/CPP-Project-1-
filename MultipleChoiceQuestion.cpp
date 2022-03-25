@@ -30,10 +30,11 @@ void MultipleChoiceQuestion::printQuestion() const
 
 void MultipleChoiceQuestion::promptAnswer(){
 	string input;
-	while(InputHandler::verifyMCQInput(input,this->allowedInputs) == 0){
+	do{
 
 		cout << "Your answer: "; cin >> input; cout << endl;
-	}
+	}while(InputHandler::verifyMCQInput(input,this->allowedInputs) == 0);
+	
 	if(verifyAnswer(input)){
 		cout << "Correct" << endl;
 	}else{

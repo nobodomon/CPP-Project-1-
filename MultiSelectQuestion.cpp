@@ -2,7 +2,7 @@
 #include "InputHandler.h"
 using namespace std;
 
-MultiSelectQuestion::MultiSelectQuestion(string question, QuestionType type, vector<string> choices, vector<string> allowedInputs, vector<int> correctAnswer)
+MultiSelectQuestion::MultiSelectQuestion(string question, QuestionType type, vector<string> choices, vector<string> allowedInputs, vector<string> correctAnswer)
     : Question(question, type)
 {
     this->question = question;
@@ -26,25 +26,15 @@ void MultiSelectQuestion::printQuestion()
 void MultiSelectQuestion::promptAnswer()
 {
     vector<string> inputs;
-    while (InputHandler::verifyMSQInput(inputs,this->allowedInputs) == 0 || inputs.size() == 0)
+    do
     {
         inputs.clear();
         string rawInput;
-        size_t pos = 0;
-        string token;
         cout << "Your answer: ";
         cin >> rawInput;
-        cout << endl;
-        if(rawInput.length() == 1){
-            rawInput + ',';
-        }
-        while ((pos = rawInput.find(",")) != string::npos)
-        {
-            token = rawInput.substr(0, pos);
-            inputs.push_back(token);
-            rawInput.erase(0, pos + string(",").length());
-        }
-    }
+        inputs = InputHandler::stringToVector(rawInput, ',');
+    }while(InputHandler::verifyMSQInput(inputs,this->allowedInputs) == 0);
+
     if(verifyAnswer(inputs)){
         cout << "Correct!" << endl;
     }else{
@@ -56,13 +46,14 @@ int MultiSelectQuestion::verifyAnswer(vector<string> inputs)
 {
     int counter = 0;
     for(auto &input : inputs){
-        for(auto &answer: correctAnswers){
-            if(input == to_string(answer)){
+        for(auto &answer: this->correctAnswers){
+            if(input == answer){
                 counter++;
+                break;
             }
         }
     }
-    if(counter == correctAnswers.size()){
+    if(counter == this->correctAnswers.size()){
         return 1;
     }else{
         return 0;
