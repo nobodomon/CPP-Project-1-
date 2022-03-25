@@ -3,35 +3,43 @@
 
 #include <iostream>
 #include <string>
-#include "FileHandler.cpp"
+#include "FileHandler.h"
 #include "Quiz.h"
 #include "Question.h"
 #include "MultipleChoiceQuestion.h"
 #include "MultiSelectQuestion.h"
+#include "ShortAnswerQuestion.h"
 using namespace std;
 
 int main()
 {
 	string input;
-	printf("Welcome to Quizzo how may I help you today?");
+	cout << "Welcome to Quizzo how may I help you today?" << endl;
 	while (input != "exit")
 	{
 		Quiz* readQuiz = FileHandler::getQuizFromFile();
-		FileHandler* handler = new FileHandler;
-		cout << "Quiz code " << readQuiz->quizCode << endl;
+		//cout << "Quiz code " << readQuiz->quizCode << endl;
 		QuestionType currType;
 		//vector<unique_ptr<Question>> questions = readQuiz.Questions;
 		int i = 0;
-		vector<unique_ptr<Question>> questions = readQuiz->Questions;
-		for (auto &qn : questions)
+		vector<Question*>:: iterator iter;
+		for (iter = readQuiz->Questions.begin(); iter != readQuiz->Questions.end(); iter++)
 		{
+			//cout << i << endl;
+			if(MultipleChoiceQuestion* mcq = dynamic_cast<MultipleChoiceQuestion*>(readQuiz->Questions[i]); mcq != nullptr){
+				//cout << "MCQ Casted" << endl;
+				mcq->printQuestion();
+				mcq->promptAnswer();
+			}else if(MultiSelectQuestion* msq = dynamic_cast<MultiSelectQuestion*>(readQuiz->Questions[i]); msq != nullptr){
+				//cout << "MSQ Casted" << endl;
+				msq->printQuestion();
+				msq->promptAnswer();
+			}else if(ShortAnswerQuestion* saq = dynamic_cast<ShortAnswerQuestion*>(readQuiz->Questions[i]); saq != nullptr){
+				saq->printQuestion();
+				saq->promptAnswer();
+			}
 			//currType = qn->type;
 			//cout << qn.question << endl;
-			if (MultipleChoiceQuestion* mcq = dynamic_cast<MultipleChoiceQuestion*>(qn.get()); mcq != nullptr)
-			{
-				cout << mcq->question << endl;
-				mcq->printQuestion();
-			}
 			// else if (currType == QuestionType::MSQ)
 			// {
 			// 	cout << qn.question << endl;
@@ -43,4 +51,6 @@ int main()
 			i++;
 		}
 	}
+	cout << "Goodbye!" << endl;
+	return 1;
 }

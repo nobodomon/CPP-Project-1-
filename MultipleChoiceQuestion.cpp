@@ -1,25 +1,51 @@
-#include "Question.h"
-#include <string>
-#include <vector>
+#include "MultipleChoiceQuestion.h"
+#include "InputHandler.h"
 using namespace std;
 
-class MultipleChoiceQuestion: public virtual Question {
-public:
-	MultipleChoiceQuestion(string question, QuestionType type, vector<string> choices, int correctAnswer):  Question(question,type){};
-	~MultipleChoiceQuestion(){
-		
+MultipleChoiceQuestion::MultipleChoiceQuestion(string question, QuestionType type, vector<string> choices, vector<string> allowedInputs, int correctAnswer)
+	: Question(question, type)
+{
+	this->question = question;
+	this->type = type;
+	this->choices = choices;
+	this->allowedInputs = allowedInputs;
+	this->correctAnswer = correctAnswer;
+}
+
+MultipleChoiceQuestion::~MultipleChoiceQuestion()
+{
+}
+
+void MultipleChoiceQuestion::printQuestion() const
+{
+	//cout << "Printing MCQ question" << endl;
+	cout << this->question << endl;
+	int optionNo = 1;
+	for (auto &choice : this->choices)
+	{
+		cout << "[" + to_string(optionNo) + "] " <<  choice << endl;
+		optionNo++;
 	}
-	// MultipleChoiceQuestion() = delete;
-	// MultipleChoiceQuestion(const MultipleChoiceQuestion &) = delete;
-	// MultipleChoiceQuestion(MultipleChoiceQuestion &&) = default;
-	vector<string> choices;
-	int correctAnswer;
-	int userChoice;
-	virtual void printQuestion(){
-		cout << this->question;
-		for(auto choice: choices){
-			cout << choice << endl;
-		}
+}
+
+void MultipleChoiceQuestion::promptAnswer(){
+	string input;
+	while(InputHandler::verifyMCQInput(input,this->allowedInputs) == 0){
+
+		cout << "Your answer: "; cin >> input; cout << endl;
 	}
-	virtual int verifyAnswer();
-};
+	if(verifyAnswer(input)){
+		cout << "Correct" << endl;
+	}else{
+		cout << "Wrong!" << endl;
+	}
+}
+
+int MultipleChoiceQuestion::verifyAnswer(string input)
+{
+	if(input == to_string(this->correctAnswer)){
+		return 1;
+	}else{
+		return 0;
+	}
+}

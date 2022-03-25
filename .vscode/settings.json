@@ -24,7 +24,7 @@
     "**/.vscode",
     "**/.vscode/**"
   ],
-  "C_Cpp.errorSquiggles": "Enabled",
+  "C_Cpp.errorSquiggles": "Disabled",
   "files.associations": {
     "*.py": "python",
     "array": "cpp",

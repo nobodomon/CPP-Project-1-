@@ -1,11 +1,22 @@
 #include <string>
-#include "QuestionType.h"
+#include "Question.h"
 
-class Question {
-	public:
-		Question(string question, QuestionType type){};
-		virtual ~Question(){};
-		std::string question;
-		QuestionType type;
-		virtual int verifyAnswer();
-};
+Question::Question(string question, QuestionType type)
+{
+    this->question = question;
+    this->type = type;
+}
+
+Question::~Question()
+{
+
+}
+
+void Question::printQuestion(){
+    cout << this->question;
+}
+
+int Question::verifyAnswer()
+{
+	return 1;
+}

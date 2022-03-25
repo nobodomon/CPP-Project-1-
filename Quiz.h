@@ -1,16 +1,17 @@
 #pragma once
 
-#include<iostream> 
-#include<string>
+#include <iostream>
+#include <string>
 #include <vector>
+#include <memory>
 #include "Question.h"
-using namespace std;
 
-class Quiz {
+class Quiz
+{
 public:
     int quizCode;
     std::string title;
-	std::vector<unique_ptr<Question>> Questions;
-    virtual void printQuestion(){};
-    void readFile() {};
+    std::vector<Question*> Questions;
+    void readFile();
+    int addQuestion(Question*);
 };

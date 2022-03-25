@@ -1,14 +1,16 @@
-#include <string>
-#include <memory>
-#include "Question.h"
-#include <vector>
+#include "Quiz.h"
 using namespace std;
-class Quiz
+
+
+int Quiz::addQuestion(Question* questionToAdd){
+    try{
+        this->Questions.push_back(questionToAdd);
+        return 1;
+    }catch(exception){
+        return 0;
+    }
+}
+
+void Quiz::readFile()
 {
-public:
-	int quizCode;
-	std::string title;
-	std::vector<unique_ptr<Question>> Questions;
-	virtual void printQuestion(){}
-	void readFile(){};
-};
+}
