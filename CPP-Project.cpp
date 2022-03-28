@@ -6,13 +6,17 @@
 #include "FileHandler.h"
 #include "Quiz.h"
 #include "Question.h"
+#include "Index.h"
 #include "MultipleChoiceQuestion.h"
 #include "MultiSelectQuestion.h"
 #include "ShortAnswerQuestion.h"
+#include "Person.h"
 using namespace std;
 
 void printMenu();
+void registerUser();
 void open();
+void load();
 void detectInputIntent(string input);
 
 int main()
@@ -32,57 +36,61 @@ int main()
 void printMenu()
 {
 	cout << "Commands:" << endl;
-	cout << "open - open a quiz and start attempting" << endl;
+	cout << "getinfo - Load your userdata" << endl;
+	cout << "load - Add a new quiz into the index" << endl;
+	cout << "open - Open a quiz and start attempting" << endl;
 	cout << "info - Displays your info" << endl;
+	cout << "exit - Exit the program" << endl;
+}
+
+void registerUser(){
+	cout << "Enter name: " << endl;
+	string name;
+	cin >> name;
+	string password;
+	string confirmPassword;
+	do{
+		cout << "Enter a password" << endl;
+		cin >> password;
+		cout << "Confirm password" << endl;
+		cin >> confirmPassword;
+	}while(password != confirmPassword);
+
+	Person * readPerson = FileHandler::createUser(name,password);
+	cout << readPerson->name << endl;
 }
 
 void open()
-{
-	Quiz *readQuiz = FileHandler::getQuizFromFile();
-	// cout << "Quiz code " << readQuiz->quizCode << endl;
-	QuestionType currType;
-	// vector<unique_ptr<Question>> questions = readQuiz.Questions;
-	int i = 0;
-	vector<Question *>::iterator iter;
-	for (iter = readQuiz->Questions.begin(); iter != readQuiz->Questions.end(); iter++)
-	{
-		// cout << i << endl;
-		if (MultipleChoiceQuestion *mcq = dynamic_cast<MultipleChoiceQuestion *>(readQuiz->Questions[i]); mcq != nullptr)
-		{
-			// cout << "MCQ Casted" << endl;
-			mcq->printQuestion();
-			mcq->promptAnswer();
-		}
-		else if (MultiSelectQuestion *msq = dynamic_cast<MultiSelectQuestion *>(readQuiz->Questions[i]); msq != nullptr)
-		{
-			// cout << "MSQ Casted" << endl;
-			msq->printQuestion();
-			msq->promptAnswer();
-		}
-		else if (ShortAnswerQuestion *saq = dynamic_cast<ShortAnswerQuestion *>(readQuiz->Questions[i]); saq != nullptr)
-		{
-			saq->printQuestion();
-			saq->promptAnswer();
-		}
-		// currType = qn->type;
-		// cout << qn.question << endl;
-		//  else if (currType == QuestionType::MSQ)
-		//  {
-		//  	cout << qn.question << endl;
-		//  	for (auto option:qn.choices)
-		//  	{
-		//  		cout << option << endl;
-		//  	}
-		//  }
-		i++;
-	}
-	cout << "-Quiz end-" << endl;
+{	
+	cout << "Enter quiz file name" << endl;
+	string path;
+	cin >> path;
+	Quiz *readQuiz = FileHandler::getQuizFromFile(path);
+	readQuiz->startQuiz();
+}
+
+void load(){
+	string filePath;
+	cout << "Adding new quiz into index" << endl;	
+	cout << "Enter quiz file name" << endl;
+	string path;
+	cin >> path;
+	Quiz *quiz = FileHandler::getQuizFromFile(path);
+	FileHandler::addNewQuiz(quiz,path);
 }
 
 void detectInputIntent(string input){
-	if(input == "open"){
+	if(input == "register"){
+		registerUser();
+		printMenu();
+	}else if(input == "open"){
 		open();
-	}else{
+		printMenu();
+	}else if(input == "load"){
+		load();
+		printMenu();
+	}
+	else{
 		cout << "Invalid option!" << endl;
 		printMenu();
 	}

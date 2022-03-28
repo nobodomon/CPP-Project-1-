@@ -12,6 +12,6 @@ public:
     int quizCode;
     std::string title;
     std::vector<Question*> Questions;
-    void readFile();
+    void startQuiz();
     int addQuestion(Question*);
 };
