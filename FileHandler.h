@@ -1,3 +1,8 @@
+#pragma once
+
+#ifndef FILEHANDLER_H
+#define FILEHANDLER_H
+
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -14,4 +19,7 @@ class FileHandler {
 		static Quiz* getQuizFromFile(string);
 		static int addNewQuiz(Quiz*, string );
 		static Person* createUser(string,string);
+		static Person* getUser(string, string);
 };
+
+#endif

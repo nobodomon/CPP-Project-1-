@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef MULTIPLECHOICEQUESTION_H
+#define MULTIPLECHOICEQUESTION_H
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -16,10 +19,12 @@ public:
   // MultipleChoiceQuestion(MultipleChoiceQuestion &&) = default;
   vector<string> choices;
   int correctAnswer;
-  int userChoice;
+  string userChoice;
   virtual int verifyAnswer(string);
   void printQuestion() const;
   void promptAnswer();
 private:
   vector<string> allowedInputs;
 };
+
+#endif

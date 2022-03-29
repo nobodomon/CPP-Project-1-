@@ -1,10 +1,20 @@
 #pragma once
 
+#ifndef QUIZATTEMPT_H
+#define QUIZATTEMPT_H
+
+#include <string>
+using namespace std;
+
 class QuizAttempt
 {
 public:
-    QuizAttempt(int ,int ,int );
+    QuizAttempt(string,int ,int ,int );
+    string attemptID;
     int quizCode;
     int score;
     int totalQns;
+    int writeFile();
 };
+
+#endif

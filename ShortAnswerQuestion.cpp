@@ -18,8 +18,10 @@ void ShortAnswerQuestion::promptAnswer(){
     string input;
     cout << "Your answer: ";
     cin >> input;
+    this->userChoice = input;
     if(verifyAnswer(input)){
         cout << "Correct!" << endl;
+        this->score = 1;
     }else{
         cout << "Wrong!" << endl;
     }

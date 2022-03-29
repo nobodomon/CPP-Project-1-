@@ -34,9 +34,10 @@ void MultipleChoiceQuestion::promptAnswer(){
 
 		cout << "Your answer: "; cin >> input; cout << endl;
 	}while(InputHandler::verifyMCQInput(input,this->allowedInputs) == 0);
-	
+	this->userChoice = input;
 	if(verifyAnswer(input)){
 		cout << "Correct" << endl;
+		this->score = 1;
 	}else{
 		cout << "Wrong!" << endl;
 	}

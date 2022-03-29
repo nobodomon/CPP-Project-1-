@@ -2,6 +2,7 @@
 #include "InputHandler.h"
 #include "Index.h"
 #include "Person.h"
+#include <sys/stat.h>
 using namespace std;
 
 Quiz *FileHandler::getQuizFromFile(string path)
@@ -67,6 +68,11 @@ Quiz *FileHandler::getQuizFromFile(string path)
 }
 
 Person* FileHandler::createUser(string user,string password){
+	struct stat buf;
+	if(stat((user+".json").c_str(), &buf) != -1){
+		cout << "User already exists!" << endl;
+		return nullptr;
+	}
 	Json::Value root;
 	ofstream outputFileStream(user+".json");	
 	root["user"]["name"] = user;
@@ -79,6 +85,23 @@ Person* FileHandler::createUser(string user,string password){
     writer -> write(root,&outputFileStream);
 	outputFileStream.close();
 	return new Person(user,password);
+}
+
+Person* FileHandler::getUser(string user, string password){
+	Json::Value root;
+	ifstream readUser(user+".json");
+	if(readUser.fail()){
+		cout << "User does not exist!" << endl;
+		return nullptr;
+	}
+	readUser >> root;
+	readUser.close();
+	if(password == root["user"]["password"].asString()){
+		return new Person(root["user"]["name"].asString(),root["user"]["password"].asString());
+	}else{
+		cout << "Invalid password!" << endl;
+		return nullptr;
+	}
 }
 
 

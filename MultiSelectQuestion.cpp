@@ -34,9 +34,10 @@ void MultiSelectQuestion::promptAnswer()
         cin >> rawInput;
         inputs = InputHandler::stringToVector(rawInput, ',');
     }while(InputHandler::verifyMSQInput(inputs,this->allowedInputs) == 0);
-
+    this->userChoice = inputs;
     if(verifyAnswer(inputs)){
         cout << "Correct!" << endl;
+        this->score = 1;
     }else{
         cout << "Wrong!" << endl;
     }

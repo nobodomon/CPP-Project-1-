@@ -1,3 +1,8 @@
+#pragma once
+
+#ifndef INPUTHANDLER_H
+#define INPUTHANDLER_H
+
 #include <string>
 #include <vector>
 #include <iostream>
@@ -9,3 +14,5 @@ class InputHandler{
         static int verifyMSQInput(vector<string>, vector<string>);
         static vector<string> stringToVector(string, char);
 };
+
+#endif
