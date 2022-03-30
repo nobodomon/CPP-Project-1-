@@ -20,7 +20,7 @@ void login();
 void open();
 void load();
 void detectInputIntent(string input);
-SessionHandler handler = SessionHandler::shared_instance();
+SessionHandler* handler = SessionHandler::shared_instance();
 int main()
 {
 	string input;
@@ -34,8 +34,8 @@ int main()
 }
 
 void printGreeting(){
-	if(handler.loggedInUser != nullptr){
-		cout << "Welcome back " + handler.loggedInUser->name + ". how may I help you today?" << endl;
+	if(handler->getUser() != nullptr){
+		cout << "Welcome back " + handler->getUser()->name + ". how may I help you today?" << endl;
 	}else{
 		cout << "Welcome to Quizzo how may I help you today?" << endl;
 	}
@@ -44,7 +44,7 @@ void printGreeting(){
 void printMenu()
 {
 	cout << "Commands:" << endl;
-	if(handler.loggedInUser == NULL){
+	if(handler->getUser() == nullptr){
 		cout << "[register] - Create a new user" << endl;
 		cout << "[login] - Login to existing user" << endl;
 	}else{
@@ -72,7 +72,7 @@ void registerUser(){
 
 	Person * readPerson = FileHandler::createUser(name,password);
 	if(readPerson != nullptr){
-		handler.loggedInUser = readPerson;
+		handler->setUser(readPerson);
 		printGreeting();
 		//cout << readPerson->name << endl;
 	}
@@ -88,7 +88,7 @@ void login(){
 	Person* loggedInUser = FileHandler::getUser(name,password);
 	if(loggedInUser != nullptr){
 		cout << "Logged in successfully as " + name << endl;
-		handler.loggedInUser = loggedInUser;
+		handler->setUser(loggedInUser);
 		printGreeting();
 	}
 	
@@ -119,7 +119,7 @@ void detectInputIntent(string input){
 		cout << "Goodbye!" << endl;
 		return;
 	}
-	if (handler.loggedInUser != nullptr)
+	if (handler->getUser() != nullptr)
 	{
 		if (input == "open")
 		{
@@ -131,7 +131,7 @@ void detectInputIntent(string input){
 			load();
 			printMenu();
 		}else if(input == "logout"){
-			handler.loggedInUser = nullptr;
+			handler->setUser(nullptr);
 			printMenu();
 		}else{
 			cout << "Invalid option!" << endl;

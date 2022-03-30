@@ -7,13 +7,11 @@
 
 class SessionHandler{
     public:
-        static SessionHandler &shared_instance() {
-            static SessionHandler sessionHandler;
-            return sessionHandler;
-        }
-        Person* loggedInUser;
+        static SessionHandler* shared_instance();
+        void setUser(Person*);
+        Person* getUser();
     private:
-        SessionHandler(){}
+        Person* loggedInUser;
 };
 
 #endif

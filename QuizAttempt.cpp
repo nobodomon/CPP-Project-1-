@@ -10,7 +10,7 @@ using namespace std;
 
 QuizAttempt::QuizAttempt(string attemptID, int quizCode, int score, int totalQns)
 {
-    this->attemptID;
+    this->attemptID = attemptID;
     this->quizCode = quizCode;
     this->score = score;
     this->totalQns = totalQns;
@@ -18,13 +18,13 @@ QuizAttempt::QuizAttempt(string attemptID, int quizCode, int score, int totalQns
 
 int QuizAttempt::writeFile()
 {
-    SessionHandler handler = SessionHandler::shared_instance();
-    cout << "Writing to " + handler.loggedInUser->name;
+    SessionHandler* handler = SessionHandler::shared_instance();
+    cout << "Writing to " + handler->getUser()->name;
     Json::Value root;
-    ifstream userFile(handler.loggedInUser->name + ".json");
+    ifstream userFile(handler->getUser()->name + ".json");
     userFile >> root;
     userFile.close();
-    ofstream outputFileStream(handler.loggedInUser->name + ".json");
+    ofstream outputFileStream(handler->getUser()->name + ".json");
     root["user"]["attempts"][attemptID]["QuizCode"] = quizCode;
     root["user"]["attempts"][attemptID]["Score"] = score;
     root["user"]["attempts"][attemptID]["TotalQns"] = totalQns;
