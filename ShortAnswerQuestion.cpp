@@ -10,6 +10,25 @@ ShortAnswerQuestion::ShortAnswerQuestion(string question, QuestionType type, vec
     this->acceptableAnswers = acceptableAnswers;
 }
 
+ostream& operator << (ostream& out, const ShortAnswerQuestion* saq){
+	out << "[Short Answer Question]" << saq->question << endl;
+	return out;
+}
+
+istream& operator >> (istream& in, ShortAnswerQuestion* saq){
+    string input;
+    cout << "Your answer: ";
+    in >> input;
+    saq->userChoice = input;
+    if(saq->verifyAnswer(input)){
+        cout << "Correct!" << endl;
+        saq->score = 1;
+    }else{
+        cout << "Wrong!" << endl;
+    }
+	return in;
+}
+
 void ShortAnswerQuestion::printQuestion(){
     cout << this->question << endl;
 }

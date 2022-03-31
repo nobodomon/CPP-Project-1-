@@ -12,6 +12,46 @@ MultiSelectQuestion::MultiSelectQuestion(string question, QuestionType type, vec
     this->correctAnswers = correctAnswer;
 }
 
+ostream &operator << (ostream &out, const MultiSelectQuestion* msq)
+{
+    out << "[Multi Select Question]" << msq->question << endl;
+    int optionNo = 1;
+    for (auto &choice : msq->choices)
+    {
+        out << "[" + to_string(optionNo) + "] " << choice << endl;
+        optionNo++;
+    }
+    return out;
+}
+
+istream &operator >> (istream &in, MultiSelectQuestion* msq)
+{
+    vector<string> inputs;
+    do
+    {
+        inputs.clear();
+        string rawInput;
+        cout << "Your answer: ";
+        in >> rawInput;
+        inputs = InputHandler::stringToVector(rawInput, ',');
+    } while (InputHandler::verifyMSQInput(inputs, msq->getAllowedInputs()) == 0);
+    msq->userChoice = inputs;
+    if (msq->verifyAnswer(inputs))
+    {
+        cout << "Correct!" << endl;
+        msq->score = 1;
+    }
+    else
+    {
+        cout << "Wrong!" << endl;
+    }
+    return in;
+}
+
+vector<string> MultiSelectQuestion::getAllowedInputs(){
+    return this->allowedInputs;
+}
+
 void MultiSelectQuestion::printQuestion()
 {
     cout << this->question << endl;
@@ -33,12 +73,15 @@ void MultiSelectQuestion::promptAnswer()
         cout << "Your answer: ";
         cin >> rawInput;
         inputs = InputHandler::stringToVector(rawInput, ',');
-    }while(InputHandler::verifyMSQInput(inputs,this->allowedInputs) == 0);
+    } while (InputHandler::verifyMSQInput(inputs, this->allowedInputs) == 0);
     this->userChoice = inputs;
-    if(verifyAnswer(inputs)){
+    if (verifyAnswer(inputs))
+    {
         cout << "Correct!" << endl;
         this->score = 1;
-    }else{
+    }
+    else
+    {
         cout << "Wrong!" << endl;
     }
 }
@@ -46,17 +89,23 @@ void MultiSelectQuestion::promptAnswer()
 int MultiSelectQuestion::verifyAnswer(vector<string> inputs)
 {
     int counter = 0;
-    for(auto &input : inputs){
-        for(auto &answer: this->correctAnswers){
-            if(input == answer){
+    for (auto &input : inputs)
+    {
+        for (auto &answer : this->correctAnswers)
+        {
+            if (input == answer)
+            {
                 counter++;
                 break;
             }
         }
     }
-    if(counter == this->correctAnswers.size()){
+    if (counter == this->correctAnswers.size())
+    {
         return 1;
-    }else{
+    }
+    else
+    {
         return 0;
     }
 }

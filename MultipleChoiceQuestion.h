@@ -14,15 +14,15 @@ class MultipleChoiceQuestion : public virtual Question
 public:
   MultipleChoiceQuestion(string, QuestionType, vector<string>, vector<string>, int);
   ~MultipleChoiceQuestion();
-  // MultipleChoiceQuestion() = delete;
-  // MultipleChoiceQuestion(const MultipleChoiceQuestion &) = delete;
-  // MultipleChoiceQuestion(MultipleChoiceQuestion &&) = default;
+  friend ostream& operator <<(ostream&, const MultipleChoiceQuestion*);
+  friend istream& operator >>(istream&, MultipleChoiceQuestion*);
   vector<string> choices;
   int correctAnswer;
   string userChoice;
   virtual int verifyAnswer(string);
   void printQuestion() const;
   void promptAnswer();
+  vector<string> getAllowedInputs();
 private:
   vector<string> allowedInputs;
 };

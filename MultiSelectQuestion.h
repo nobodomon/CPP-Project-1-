@@ -13,12 +13,16 @@ class MultiSelectQuestion : public Question
 {
 public:
   MultiSelectQuestion(string, QuestionType,vector<string>,vector<string>,vector<string>);
+  
+  friend ostream& operator <<(ostream&, const MultiSelectQuestion*);
+  friend istream& operator >>(istream&, MultiSelectQuestion*);
   vector<string> choices;
   vector<string> correctAnswers;
   vector<string> userChoice;
   virtual int verifyAnswer(vector<string>);
   void printQuestion();
   void promptAnswer();
+  vector<string> getAllowedInputs();
 private:
   vector<string> allowedInputs;
 };

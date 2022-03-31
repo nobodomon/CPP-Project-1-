@@ -16,6 +16,37 @@ MultipleChoiceQuestion::~MultipleChoiceQuestion()
 {
 }
 
+vector<string> MultipleChoiceQuestion::getAllowedInputs(){
+	return this->allowedInputs;
+}
+
+ostream& operator << (ostream& out, const MultipleChoiceQuestion* mcq){
+	out << "[MCQ]" << mcq->question << endl;
+	int optionNo = 1;
+	for(auto &choice: mcq->choices){
+		out << "[" + to_string(optionNo) + "] " <<  choice << endl;
+		optionNo++;
+	}
+	return out;
+}
+
+istream& operator >> (istream& in, MultipleChoiceQuestion* mcq){
+	string input;
+	do{
+
+		cout << "Your answer: "; 
+		in >> input; cout << endl;
+	}while(InputHandler::verifyMCQInput(input,mcq->getAllowedInputs()) == 0);
+	mcq->userChoice = input;
+	if(mcq->verifyAnswer(input)){
+		cout << "Correct" << endl;
+		mcq->score = 1;
+	}else{
+		cout << "Wrong!" << endl;
+	}
+	return in;
+}
+
 void MultipleChoiceQuestion::printQuestion() const
 {
 	//cout << "Printing MCQ question" << endl;

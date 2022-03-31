@@ -30,21 +30,21 @@ void Quiz::startQuiz()
 		if (MultipleChoiceQuestion *mcq = dynamic_cast<MultipleChoiceQuestion *>(this->Questions[i]); mcq != nullptr)
 		{
 			// cout << "MCQ Casted" << endl;
-			mcq->printQuestion();
-			mcq->promptAnswer();
+			cout << mcq;
+			cin >> mcq;
 			totalScore += mcq->score;
 		}
 		else if (MultiSelectQuestion *msq = dynamic_cast<MultiSelectQuestion *>(this->Questions[i]); msq != nullptr)
 		{
 			// cout << "MSQ Casted" << endl;
-			msq->printQuestion();
-			msq->promptAnswer();
+			cout << msq;
+			cin >> msq;
 			totalScore += msq->score;
 		}
 		else if (ShortAnswerQuestion *saq = dynamic_cast<ShortAnswerQuestion *>(this->Questions[i]); saq != nullptr)
 		{
-			saq->printQuestion();
-			saq->promptAnswer();
+			cout << saq;
+			cin >> saq;
 			totalScore += saq->score;
 		}
 		i++;
