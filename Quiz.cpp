@@ -6,6 +6,12 @@
 #include "QuizAttempt.h"
 #include <memory>
 #include <fstream>
+#include <string>
+#include <ctime>
+#include <cstdlib>
+#include <vector>
+#include <algorithm> // for copy
+#include <iterator> // for ostream_iterator
 using namespace std;
 
 
@@ -50,6 +56,18 @@ void Quiz::startQuiz()
 		i++;
 	}
 	cout << "-Quiz end-" << endl;
-	QuizAttempt* attempt = new QuizAttempt("abc",this->quizCode,totalScore,this->Questions.size());
+	//Find attemptID
+    vector<string> strNum;
+	string attemptID;
+    srand(time(0));  // Initialize random number generator.
+    for(int i=0;i<10;i++)
+    {
+        strNum.push_back(to_string(rand()%10));
+    } 
+    for(auto & elem : strNum)
+    {
+        attemptID = attemptID.append(elem);
+    }
+	QuizAttempt* attempt = new QuizAttempt(attemptID,this->quizCode,totalScore,this->Questions.size());
 	attempt->writeFile();
 }
