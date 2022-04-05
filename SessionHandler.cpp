@@ -1,4 +1,5 @@
 #include "SessionHandler.h"
+#include "FileHandler.h"
 #include <iostream>
 using namespace std;
 
@@ -19,6 +20,11 @@ SessionHandler* SessionHandler::shared_instance()
 
 void SessionHandler::setUser(Person* person){
     this->loggedInUser = person;
+}
+
+void SessionHandler::updateUser(){
+    this->loggedInUser = FileHandler::getUser(this->loggedInUser->name,this->loggedInUser->password);
+    cout << "Current user updated";
 }
 
 Person* SessionHandler::getUser(){

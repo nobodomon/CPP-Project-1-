@@ -19,7 +19,7 @@ QuizAttempt::QuizAttempt(string attemptID, int quizCode, int score, int totalQns
 int QuizAttempt::writeFile()
 {
     SessionHandler* handler = SessionHandler::shared_instance();
-    cout << "Writing to " + handler->getUser()->name;
+    cout << "Writing to " + handler->getUser()->name << endl;
     Json::Value root;
     ifstream userFile(handler->getUser()->name + ".json");
     userFile >> root;
@@ -41,6 +41,7 @@ int QuizAttempt::writeFile()
     
     cout << "[Success] Adding attempt to user file success" << endl;
     outputFileStream.close();
+    handler->updateUser();
     return 1;
 }
 

@@ -15,8 +15,7 @@ class Index{
         string quizTitle;
         string quizPath;
         friend ostream& operator << (ostream&, const Index*);
-        template<typename T>
-        friend bool operator == (const Index*,T);
+        friend bool operator == (const Index*,string in);
 };
 
 #endif

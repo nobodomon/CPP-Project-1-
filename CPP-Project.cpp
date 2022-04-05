@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include <math.h>
 #include "FileHandler.h"
 #include "Quiz.h"
 #include "Question.h"
@@ -49,6 +50,7 @@ void printMenu()
 		cout << "[login] - Login to existing user" << endl;
 	}else{
 		cout << "[load] - Add a new quiz into the index" << endl;
+		cout << "[list] - Display the quiz library" << endl;
 		cout << "[open] - Open a quiz and start attempting" << endl;
 		cout << "[info] - Displays your info" << endl;
 		cout << "[logout] - logout from current user" << endl;
@@ -135,6 +137,34 @@ void info(){
 	cout << "Average Scores" << endl;
 }
 
+void list(){
+	string input;
+	vector<Index*> indexes = FileHandler::getIndexes();
+	do{
+		
+		for(int i = 0; i < indexes.size();i++){
+			
+			cout << indexes[i];
+			if ((i != 0 && (i + 1) % 5 == 0) || i == indexes.size()-1){
+				cout << "< prev " << ceil((i+1)/5.0) << "/" << (indexes.size()+ (5-1))/5 <<  " next > [close] to exit" << endl;
+				do{
+					cin >> input;
+				}while(input != "prev" && input != "next" && input != "close");
+				if(input == "prev"){
+					if(i%5 != 0){
+						i -= 5+i%5;
+					}
+					i -= 5;
+				}else if(input == "next"){
+				}else if(input == "close"){
+					break;
+				}
+			}
+			
+		}
+	}while(input != "close");
+}
+
 void load(){
 	string filePath;
 	cout << "Adding new quiz into index" << endl;	
@@ -157,21 +187,35 @@ void detectInputIntent(string input){
 		{
 			open();
 			printMenu();
+			return;
 		}
-		else if (input == "load")
+		if(input == "list"){
+			list();
+			printMenu();
+			return;
+		}
+		if (input == "load")
 		{
 			load();
 			printMenu();
-		}else if(input == "info"){
+			return;
+		}
+
+		if(input == "info"){
 			info();
 			printMenu();
-		
-		}else if(input == "logout"){
+			return;
+		}
+
+		if(input == "logout"){
 			handler->setUser(nullptr);
 			printMenu();
+			return;
+
 		}else{
 			cout << "Invalid option!" << endl;
 			printMenu();
+			return;
 		}
 	}
 	else

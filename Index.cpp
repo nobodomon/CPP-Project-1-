@@ -18,11 +18,10 @@ ostream& operator<< (ostream& out, const Index* index){
     return out;
 }
 
-template<typename T>
-bool Index::operator==(const Index* index,T d){
-    if(to_string(index->quizCode) == d){
+bool operator==(const Index* index, string in){
+    if(to_string(index->quizCode) == in){
         return true;
-    }else if(index->quizPath == d){
+    }else if(index->quizPath == in){
         return true;
     }
     return false;

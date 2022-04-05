@@ -10,6 +10,7 @@ class SessionHandler{
         static SessionHandler* shared_instance();
         void setUser(Person*);
         Person* getUser();
+        void updateUser();
     private:
         Person* loggedInUser;
 };
