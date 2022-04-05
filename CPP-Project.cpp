@@ -48,7 +48,6 @@ void printMenu()
 		cout << "[register] - Create a new user" << endl;
 		cout << "[login] - Login to existing user" << endl;
 	}else{
-		cout << "[getinfo] - Load your userdata" << endl;
 		cout << "[load] - Add a new quiz into the index" << endl;
 		cout << "[open] - Open a quiz and start attempting" << endl;
 		cout << "[info] - Displays your info" << endl;
@@ -96,11 +95,44 @@ void login(){
 
 void open()
 {	
-	cout << "Enter quiz file name" << endl;
-	string path;
-	cin >> path;
-	Quiz *readQuiz = FileHandler::getQuizFromFile(path);
-	readQuiz->startQuiz();
+	vector<Index*> index = FileHandler::getIndexes();
+	cout << "Newest Quizzes" << endl;
+	if(index.size() < 5){
+		for(int i = 0; i < index.size(); i++){
+			cout << index[i];
+		}
+	}else{
+		for(int i = index.size()-5; i < index.size(); i++){
+			cout << index[i];
+		}
+	}
+	cout << "Enter quiz file name or quiz code" << endl;
+	string in;
+	cin >> in;
+	Index* found = FileHandler::getIndexByKey(in,index);
+	if(found != nullptr){
+		Quiz *readQuiz = FileHandler::getQuizFromFile(found->quizPath);
+		readQuiz->startQuiz();
+	}else{
+		cout << "Quiz does not exist!";
+	}
+}
+
+void info(){
+	cout << "Latest Attempts" << endl;
+	auto attempts = handler->getUser()->getAttempts(); 
+	if(attempts.size() > 3){
+		
+		for(int i = attempts.size() - 3; i < attempts.size(); i++){
+			cout << attempts[i];
+		}
+	}else{
+
+		for(int i = 0; i < attempts.size(); i++){
+			cout << attempts[i];
+		}
+	}
+	cout << "Average Scores" << endl;
 }
 
 void load(){
@@ -130,6 +162,10 @@ void detectInputIntent(string input){
 		{
 			load();
 			printMenu();
+		}else if(input == "info"){
+			info();
+			printMenu();
+		
 		}else if(input == "logout"){
 			handler->setUser(nullptr);
 			printMenu();

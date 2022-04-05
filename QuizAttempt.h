@@ -15,6 +15,7 @@ public:
     int score;
     int totalQns;
     int writeFile();
+    friend ostream& operator << (ostream& ,const QuizAttempt*);
 };
 
 #endif

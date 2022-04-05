@@ -25,9 +25,13 @@ int QuizAttempt::writeFile()
     userFile >> root;
     userFile.close();
     ofstream outputFileStream(handler->getUser()->name + ".json");
-    root["user"]["attempts"][attemptID]["QuizCode"] = quizCode;
-    root["user"]["attempts"][attemptID]["Score"] = score;
-    root["user"]["attempts"][attemptID]["TotalQns"] = totalQns;
+    Json::Value attempt;
+    attempt["AttemptID"] = attemptID;
+    attempt["QuizCode"] = quizCode;
+    attempt["Score"] = score;
+    attempt["TotalQns"] = totalQns;
+
+    root["user"]["attempts"].append(attempt);
 
     Json::StreamWriterBuilder builder;
     builder["commentStyle"] = "None";
@@ -38,4 +42,10 @@ int QuizAttempt::writeFile()
     cout << "[Success] Adding attempt to user file success" << endl;
     outputFileStream.close();
     return 1;
+}
+
+ostream& operator << (ostream& out, const QuizAttempt* attempt){
+    out << "[" <<  attempt->attemptID << "] " << attempt->quizCode << endl;
+    out << attempt->score << "/" << attempt->totalQns << endl;
+    return out;
 }

@@ -6,11 +6,11 @@
 using namespace std;
 class Person {
 public:
-	Person(string name,string password){
-		this->name = name;
-		this->password = password;
-	}
+	Person(string,string);
+	Person(string,string, vector<QuizAttempt*>);
 	string name;
 	string password;
+	vector<QuizAttempt*> getAttempts();
+private:
 	vector<QuizAttempt*> quizAttempts;
 };

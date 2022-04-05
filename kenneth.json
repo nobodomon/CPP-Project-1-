@@ -2,14 +2,26 @@
   "user" : 
   {
     "attempts" : 
-    {
-      "abc" : 
+    [
       {
+        "AttemptID" : "3886973085",
+        "QuizCode" : 1,
+        "Score" : 2,
+        "TotalQns" : 3
+      },
+      {
+        "AttemptID" : "6433266110",
+        "QuizCode" : 1,
+        "Score" : 1,
+        "TotalQns" : 3
+      },
+      {
+        "AttemptID" : "9555233978",
         "QuizCode" : 1,
         "Score" : 2,
         "TotalQns" : 3
       }
-    },
+    ],
     "name" : "kenneth",
     "password" : "123"
   }

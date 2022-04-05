@@ -77,7 +77,7 @@ Person* FileHandler::createUser(string user,string password){
 	ofstream outputFileStream(user+".json");	
 	root["user"]["name"] = user;
 	root["user"]["password"] = password;
-	
+	root["user"]["attempts"] = Json::arrayValue;
 	Json::StreamWriterBuilder builder;
 	builder["commentStyle"] = "None";
 	builder["indentation"] = "  ";
@@ -88,6 +88,7 @@ Person* FileHandler::createUser(string user,string password){
 }
 
 Person* FileHandler::getUser(string user, string password){
+	vector<QuizAttempt*> attempts;
 	Json::Value root;
 	ifstream readUser(user+".json");
 	if(readUser.fail()){
@@ -96,41 +97,82 @@ Person* FileHandler::getUser(string user, string password){
 	}
 	readUser >> root;
 	readUser.close();
+
 	if(password == root["user"]["password"].asString()){
-		return new Person(root["user"]["name"].asString(),root["user"]["password"].asString());
+		Json::Value attemptsArray = root["user"]["attempts"];
+		for(Json::Value::ArrayIndex i = 0; i != attemptsArray.size(); i++){
+			auto curr = attemptsArray[i];
+			attempts.push_back(new QuizAttempt(curr["AttemptID"].asString(),curr["QuizCode"].asInt(),curr["Score"].asInt(),curr["TotalQns"].asInt()));
+		}
+		return new Person(root["user"]["name"].asString(),root["user"]["password"].asString(),attempts);
 	}else{
 		cout << "Invalid password!" << endl;
 		return nullptr;
 	}
 }
 
+int FileHandler::createQuizIndexFile(){
+	try{
+		Json::Value root;
+		root["Quizes"] = Json::arrayValue;
+		Json::StreamWriterBuilder builder;
+		builder["commentStyle"] = "None";
+		builder["indentation"] = "  ";
+		unique_ptr<Json::StreamWriter> writer(builder.newStreamWriter());
+		ofstream outputFileStream("QuizIndex.json");
+		writer -> write(root,&outputFileStream);
+		cout << "[Success] Creating new index success" << endl;
+
+		outputFileStream.close();
+		return 1;
+	}catch(exception){
+		cout << "Error creating new index!";
+		return 0;
+	}
+}
 
 int FileHandler::addNewQuiz(Quiz* quiz,string quizPath){
     try{
 
         Json::Value root;
         ifstream QuizIndex("QuizIndex.json");
-        QuizIndex >> root;
+		if(QuizIndex.fail()){
+			QuizIndex.close();
+			createQuizIndexFile();
+        	ifstream QuizIndex("QuizIndex.json");
+        	QuizIndex >> root;
+		}else{
+			QuizIndex >> root;
+		}
+		
+		Json::Value newIndexEntry;
 
-        if(root["Quizes"][to_string(quiz->quizCode)].isNull()){
+		newIndexEntry["QuizCode"] = quiz->quizCode;
+		newIndexEntry["QuizTitle"] = quiz->title;
+		newIndexEntry["QuizPath"] = quizPath;
 
-        }else{
-            cout << "Would you like to overwrite the index?" << endl;
-            string input;
-            do{
-                cin >> input;
-            }while(input != "y" && input != "Y" && input != "n" && input != "N");
-            if(input == "N" || input == "n"){
-                cout << "[Fail] Adding to index failed" << endl;
-                QuizIndex.close();
-                return 0;
-            }
-        }
+		for(Json::Value::ArrayIndex i = 0; i != root["Quizes"].size(); i++){
+			if(root["Quizes"][i]["QuizCode"].asInt() == quiz->quizCode){
+				cout << "Would you like to overwrite the index?" << endl;
+				string input;
+				do{
+					cin >> input;
+				}while(input != "y" && input != "Y" && input != "n" && input != "N");
+				if(input == "N" || input == "n"){
+					cout << "[Fail] Adding to index failed" << endl;
+					QuizIndex.close();
+					return 0;
+				}else{
+					root["Quizes"][i] = newIndexEntry;
+					cout << "[Success] Overwriting completed" << endl;
+					QuizIndex.close();
+					return 1;
+				}
+			}
+		}
         
 
-        root["Quizes"][to_string(quiz->quizCode)]["QuizCode"] = quiz->quizCode;
-        root["Quizes"][to_string(quiz->quizCode)]["QuizTitle"] = quiz->title;
-        root["Quizes"][to_string(quiz->quizCode)]["QuizPath"] = quizPath;
+        root["Quizes"].append(newIndexEntry);
 
         QuizIndex.close();
 
@@ -149,4 +191,25 @@ int FileHandler::addNewQuiz(Quiz* quiz,string quizPath){
         return 0;
     }
     return 1;
+}
+
+vector<Index*> FileHandler::getIndexes(){
+	Json::Value root;
+	ifstream quizIndex("QuizIndex.json");
+	quizIndex >> root;
+	vector<Index*> index;
+	for(Json::Value::ArrayIndex i = 0; i < root["Quizes"].size(); i++){
+		Json::Value curr = root["Quizes"][i];
+		index.push_back(new Index(curr["QuizCode"].asInt(),curr["QuizTitle"].asString(),curr["QuizPath"].asString()));
+	}
+	return index;
+}
+
+Index* FileHandler::getIndexByKey(string in, vector<Index*> index){
+	for(int i = 0; i < index.size();i++){
+		if(index[i] == in){
+			return index[i];
+		}
+	}
+	return nullptr;
 }
