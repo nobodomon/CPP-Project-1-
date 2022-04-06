@@ -16,15 +16,22 @@ public:
   
   friend ostream& operator <<(ostream&, const MultiSelectQuestion*);
   friend istream& operator >>(istream&, MultiSelectQuestion*);
-  vector<string> choices;
-  vector<string> correctAnswers;
-  vector<string> userChoice;
   virtual int verifyAnswer(vector<string>);
   void printQuestion();
   void promptAnswer();
   vector<string> getAllowedInputs();
+  vector<string> getChoices();
+  void setChoices(vector<string>);
+  vector<string> getCorrectAnswers();
+  void setCorrectAnswers(vector<string>);
+  vector<string> getUserChoice();
+  void setUserChoice(vector<string>);
+
 private:
   vector<string> allowedInputs;
+  vector<string> choices;
+  vector<string> correctAnswers;
+  vector<string> userChoice;
 };
 
 #endif

@@ -10,15 +10,20 @@
 using namespace std;
 
 class ShortAnswerQuestion : public Question{
+    private:
+    vector<string> acceptableAnswers;
+    string userChoice;
     public:
     ShortAnswerQuestion(string, QuestionType,vector<string> acceptableAnswers);
     friend ostream& operator <<(ostream&, const ShortAnswerQuestion*);
     friend istream& operator >>(istream&, ShortAnswerQuestion*);
-    vector<string> acceptableAnswers;
-    string userChoice;
     virtual int verifyAnswer(string);
     void printQuestion();
     void promptAnswer();
+    vector<string> getAcceptableAnswers();
+    void setAcceptableAnswers(vector<string>);
+    string getUserChoice();
+    void setUserChoice(string);
 };
 
 #endif

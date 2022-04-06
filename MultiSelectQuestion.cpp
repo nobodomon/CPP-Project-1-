@@ -52,6 +52,27 @@ vector<string> MultiSelectQuestion::getAllowedInputs(){
     return this->allowedInputs;
 }
 
+vector<string> MultiSelectQuestion::getChoices(){
+    return this->choices;
+}
+void MultiSelectQuestion::setChoices(vector<string> choices){
+    this->choices = choices;
+}
+vector<string> MultiSelectQuestion::getCorrectAnswers(){
+    return this->correctAnswers;
+}
+void MultiSelectQuestion::setCorrectAnswers(vector<string> correctAnswer){
+    this->correctAnswers = correctAnswer;
+}
+
+vector<string> MultiSelectQuestion::getUserChoice(){
+    return this->userChoice;
+}
+
+void MultiSelectQuestion::setUserChoice(vector<string> userChoice){
+    this->userChoice = userChoice;
+}
+
 void MultiSelectQuestion::printQuestion()
 {
     cout << this->question << endl;

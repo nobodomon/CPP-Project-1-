@@ -54,3 +54,19 @@ int ShortAnswerQuestion::verifyAnswer(string input){
     }
     return 0;
 }
+
+vector<string> ShortAnswerQuestion::getAcceptableAnswers(){
+    return this->acceptableAnswers;
+}
+
+void ShortAnswerQuestion::setAcceptableAnswers(vector<string> acceptableAnswers){
+    this->acceptableAnswers = acceptableAnswers;
+}
+
+string ShortAnswerQuestion::getUserChoice(){
+    return this->userChoice;
+}
+
+void ShortAnswerQuestion::setUserChoice(string userChoice){
+    this->userChoice = userChoice;
+}

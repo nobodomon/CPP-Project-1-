@@ -20,6 +20,29 @@ vector<string> MultipleChoiceQuestion::getAllowedInputs(){
 	return this->allowedInputs;
 }
 
+vector<string> MultipleChoiceQuestion::getChoices(){
+	return this->choices;
+}
+void MultipleChoiceQuestion::setChoices(vector<string> choices){
+	this->choices = choices;
+}
+
+int MultipleChoiceQuestion::getCorrectAnswer(){
+	return this->correctAnswer;
+}
+
+void MultipleChoiceQuestion::setCorrectAnswer(int correctAnswer){
+	this->correctAnswer = correctAnswer;
+}
+
+string MultipleChoiceQuestion::getUserChoice(){
+	return this->userChoice;
+}
+
+void MultipleChoiceQuestion::setUserChoice(string userChoice){
+	this->userChoice = userChoice;
+}
+
 ostream& operator << (ostream& out, const MultipleChoiceQuestion* mcq){
 	out << "[MCQ]" << mcq->question << endl;
 	int optionNo = 1;
