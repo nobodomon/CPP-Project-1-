@@ -29,7 +29,13 @@ int main()
 	while (input != "exit")
 	{
 		cin >> input; cout << endl;
-		detectInputIntent(input);
+		try{
+
+			detectInputIntent(input);
+		}catch(string msg){
+			cout << msg << endl;
+		}
+		printMenu();
 	}
 	return 1;
 }
@@ -186,51 +192,44 @@ void detectInputIntent(string input){
 		if (input == "open")
 		{
 			open();
-			printMenu();
 			return;
 		}
 		if(input == "list"){
 			list();
-			printMenu();
 			return;
 		}
+
 		if (input == "load")
 		{
 			load();
-			printMenu();
 			return;
 		}
 
 		if(input == "info"){
 			info();
-			printMenu();
 			return;
 		}
 
 		if(input == "logout"){
 			handler->setUser(nullptr);
-			printMenu();
 			return;
 
-		}else{
-			cout << "Invalid option!" << endl;
-			printMenu();
-			return;
 		}
+		throw(string("Invalid option!"));
+		return;
 	}
 	else
 	{
 		if(input == "register"){
 			registerUser();
-			printMenu();
-		}else if (input == "login"){
-			login();
-			printMenu();
-		}else
-		{
-			cout << "Invalid option!" << endl;
-			printMenu();
+			return;
 		}
+		if (input == "login"){
+			login();
+			return;
+		}
+		throw(string("Invalid option!"));
+		return;
 	}
 		
 }

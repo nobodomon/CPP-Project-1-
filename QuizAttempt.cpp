@@ -46,7 +46,7 @@ int QuizAttempt::writeFile()
 }
 
 ostream& operator << (ostream& out, const QuizAttempt* attempt){
-    out << "[" <<  attempt->attemptID << "] " << attempt->quizCode << endl;
-    out << attempt->score << "/" << attempt->totalQns << endl;
+    out << "[" <<  attempt->attemptID << "] " << "Quiz Code: " << attempt->quizCode << endl;
+    out << attempt->score << "/" << attempt->totalQns << "Points" << endl;
     return out;
 }
