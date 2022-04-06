@@ -9,9 +9,7 @@
 #include <string>
 #include <ctime>
 #include <cstdlib>
-#include <vector>
-#include <algorithm> // for copy
-#include <iterator> // for ostream_iterator
+#include <ctime>
 using namespace std;
 
 
@@ -57,17 +55,16 @@ void Quiz::startQuiz()
 	}
 	cout << "-Quiz end-" << endl;
 	//Find attemptID
-    vector<string> strNum;
+    time_t curr_time;
+	tm * curr_tm;
+	char attemptDate[100];
 	string attemptID;
-    srand(time(0));  // Initialize random number generator.
-    for(int i=0;i<10;i++)
-    {
-        strNum.push_back(to_string(rand()%10));
-    } 
-    for(auto & elem : strNum)
-    {
-        attemptID = attemptID.append(elem);
-    }
+	time(&curr_time);
+	curr_tm = localtime(&curr_time);
+	
+    strftime(attemptDate, 50, "%m%d%y%H%M%S", curr_tm);
+	//QuizCode/Month/Day/Year/Hour/Min/Sec
+	attemptID = to_string(quizCode).append(attemptDate);
 	QuizAttempt* attempt = new QuizAttempt(attemptID,this->quizCode,totalScore,this->Questions.size());
 	attempt->writeFile();
 }
