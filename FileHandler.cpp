@@ -92,11 +92,12 @@ Person* FileHandler::createUser(string user,string password){
 Person* FileHandler::getUser(string user, string password){
 	vector<QuizAttempt*> attempts;
 	Json::Value root;
-	ifstream readUser(user+".json");
-	if(readUser.fail()){
+	if(!checkIfFileExist(user+".json")){
 		cout << "User does not exist!" << endl;
 		return nullptr;
 	}
+	
+	ifstream readUser(user+".json");
 	readUser >> root;
 	readUser.close();
 
