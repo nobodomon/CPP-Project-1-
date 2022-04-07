@@ -177,8 +177,13 @@ void load(){
 	cout << "Enter quiz file name" << endl;
 	string path;
 	cin >> path;
-	Quiz *quiz = FileHandler::getQuizFromFile(path);
-	FileHandler::addNewQuiz(quiz,path);
+	try{
+		FileHandler::checkIfValidFile(path,FileType::QUIZ);
+		Quiz *quiz = FileHandler::getQuizFromFile(path);
+		FileHandler::addNewQuiz(quiz,path);
+	}catch(string msg){
+		cout << msg << endl;
+	}
 }
 
 void detectInputIntent(string input){

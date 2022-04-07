@@ -15,8 +15,14 @@
 #include "Person.h"
 #include "Index.h"
 
+enum class FileType{
+	INDEX,USER,QUIZ
+};
+
 class FileHandler {
 	public:
+		static bool checkIfValidFile(string, FileType);
+		static bool checkIfFileExist(string);
 		static Quiz* getQuizFromFile(string);
 		static Person* createUser(string,string);
 		static Person* getUser(string, string);
@@ -27,5 +33,7 @@ class FileHandler {
 
 		static Index* getIndexByKey(string,vector<Index*>);
 };
+
+
 
 #endif

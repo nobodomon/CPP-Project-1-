@@ -3,7 +3,9 @@
 #include "Index.h"
 #include "Person.h"
 #include <sys/stat.h>
+#include <filesystem>
 using namespace std;
+
 
 Quiz *FileHandler::getQuizFromFile(string path)
 {
@@ -131,9 +133,9 @@ int FileHandler::createQuizIndexFile(){
 	}
 }
 
+
 int FileHandler::addNewQuiz(Quiz* quiz,string quizPath){
     try{
-
         Json::Value root;
         ifstream QuizIndex("QuizIndex.json");
 		if(QuizIndex.fail()){
@@ -212,4 +214,44 @@ Index* FileHandler::getIndexByKey(string in, vector<Index*> index){
 		}
 	}
 	return nullptr;
+}
+
+
+bool FileHandler::checkIfFileExist(string path){
+	
+	ifstream readUser(path);
+	if(readUser.fail()){
+		readUser.close();
+		return false;
+	}else{
+		readUser.close();
+		return true;
+	}
+}
+
+bool FileHandler::checkIfValidFile(string path,FileType fileType){
+	filesystem::path filePath = path;
+	if(filePath.extension() != ".json"){
+		throw(string("Invalid file!"));
+		return false;
+	}
+	if(checkIfFileExist(path) == false){
+		throw(string("File does not exist!"));
+		return false;
+	}
+	Json::Value root;
+	ifstream file(filePath);
+	file >> root;
+	file.close();
+	if(fileType == FileType::INDEX && !root["Quizes"].isNull()){
+		return true;
+	}
+	if(fileType == FileType::USER && !root["user"].isNull()){
+		return true;
+	}
+	if(fileType == FileType::QUIZ && !root["Quiz"].isNull()){
+		return true;
+	}
+	throw(string("Invalid file!"));
+	return false;
 }
